@@ -1,0 +1,6 @@
+# Composer libs.
+/vendor
+
+/.idea
+
+composer.phar
