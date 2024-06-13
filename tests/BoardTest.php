@@ -13,13 +13,13 @@ class BoardTest extends TestCase
     }
 
     /** @dataProvider validPositionsDataProvider */
-    public function testPositionIsValid($xAxis, $yAxis)
+    public function testPositionIsValid(int $xAxis, int $yAxis): void
     {
         $this->assertTrue($this->board->isValidPosition($xAxis, $yAxis));
     }
 
     /** @dataProvider invalidPositionsDataProvider */
-    public function testPositionIsInvalid($xAxis, $yAxis)
+    public function testPositionIsInvalid(int $xAxis, int $yAxis): void
     {
         $this->assertFalse($this->board->isValidPosition($xAxis, $yAxis));
     }

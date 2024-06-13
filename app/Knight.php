@@ -2,27 +2,25 @@
 
 namespace App;
 
-class Knight
-{
-    private $x;
-    private $y;
+use Exception;
 
-    public function __construct($x, $y) {
-        $this->x = $x;
-        $this->y = $y;
+class Knight extends Piece
+{
+    public function __construct(Board $board, int $xAxis, int $yAxis)
+    {
+        parent::__construct($board, $xAxis, $yAxis);
     }
 
-    public function canMove($board, $newX, $newY): bool
+    /**
+     * @throws Exception
+     */
+    public function canMove(Board $board, int $newX, int $newY): bool
     {
-        // Checking if new requested position is inside chessboard
-        if (!$board->isValidPosition($newX, $newY)) {
+        $this->isValidEndingPosition($board, $newX, $newY);
 
-            return false;
-        }
-        $dx = abs($newX - $this->x);
-        $dy = abs($newY - $this->y);
+        $dx = abs($newX - $this->xAxis);
+        $dy = abs($newY - $this->yAxis);
 
-        // Knight can move two fields in one and one field in other direction
         return ($dx == 2 && $dy == 1) || ($dx == 1 && $dy == 2);
     }
 }

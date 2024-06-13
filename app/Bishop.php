@@ -4,8 +4,11 @@ namespace App;
 
 use Exception;
 
-class Rook extends Piece
+class Bishop extends Piece
 {
+    /**
+     * @throws Exception
+     */
     public function __construct(Board $board, int $xAxis, int $yAxis)
     {
         parent::__construct($board, $xAxis, $yAxis);
@@ -18,6 +21,6 @@ class Rook extends Piece
     {
         $this->isValidEndingPosition($board, $newX, $newY);
 
-        return $this->xAxis == $newX || $this->yAxis == $newY;
+        return abs($this->xAxis - $newX) == abs($this->yAxis - $newY);
     }
 }

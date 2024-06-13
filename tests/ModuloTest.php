@@ -7,8 +7,9 @@ class ModuloTest extends TestCase
 {
     private $modulo;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->modulo = new Modulo();
     }
 
@@ -16,7 +17,7 @@ class ModuloTest extends TestCase
      * @dataProvider validValueDataProvider
      * @throws Exception
      */
-    public function testIsModuloWithValidData($value, $res)
+    public function testIsModuloWithValidData(int $value, bool $res): void
     {
         // when
         $result = $this->modulo->isModulo($value);
@@ -29,7 +30,7 @@ class ModuloTest extends TestCase
      * @dataProvider invalidValueDataProvider
      * @throws Exception
      */
-    public function testIsModuloWithInvalidData($value, $modBy)
+    public function testIsModuloWithInvalidData($value, $modBy): void
     {
         // then
         $this->expectException(Exception::class);
@@ -50,7 +51,8 @@ class ModuloTest extends TestCase
     {
         return [
             'value is a string' => ["Hakuna Matata", 2],
-            'modBy is a string' => [2, "Hakuna Matata"]
+            'modBy is a string' => [2, "Hakuna Matata"],
+            'case 3' => [true, true]
         ];
     }
 }

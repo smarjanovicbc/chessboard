@@ -12,7 +12,7 @@ class Modulo
     public function isModulo($value, $modBy = 2): bool
     {
         if (!is_numeric($value) || !is_numeric($modBy)) {
-            throw new \Exception('Parameters type must be numeric.');
+            throw new Exception('Parameters type must be numeric.');
         }
 
         return $value % $modBy === 0;
