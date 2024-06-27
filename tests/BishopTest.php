@@ -2,12 +2,12 @@
 
 use App\Board;
 use App\Bishop;
+use App\Field;
 use PHPUnit\Framework\TestCase;
 
 class BishopTest extends TestCase
 {
     private $board;
-    private $bishop;
 
     /**
      * @throws Exception
@@ -15,63 +15,72 @@ class BishopTest extends TestCase
     public function setUp()
     {
         $this->board = new Board();
-        $this->bishop = new Bishop($this->board, 0, 0);
     }
 
     /**
      * @dataProvider validPositionsDataProvider
      * @throws Exception
      */
-    public function testBishopIsAllowedToMove(int $xAxis, int $yAxis): void
+    public function testBishopIsAllowedToMove(string $startingPosition, string $endingPosition): void
     {
-        $this->assertTrue($this->bishop->canMove($this->board, $xAxis, $yAxis));
+        $bishop = new Bishop($this->board, new Field($startingPosition));
+
+        $this->assertTrue($bishop->canMove($this->board, new Field($endingPosition)));
     }
 
     /**
      * @dataProvider invalidStartingPositionsDataProvider
      * @throws Exception
      */
-    public function testBishopIsNotAllowedToMove(int $xAxis, int $yAxis): void
+    public function testWhenTryingToCreateBishopInstanceWithInvalidPosition(string $position): void
     {
         // then
         $this->expectException(Exception::class);
 
         // when
-        $this->bishop->canMove($this->board, $xAxis, $yAxis);
+        new Bishop($this->board, new Field($position));
     }
 
     /**
      * @dataProvider invalidEndingPositionsDataProvider
      * @throws Exception
      */
-    public function testBishopsStartingPositionIsNotValid(int $xAxis, int $yAxis): void
+    public function testBishopsStartingPositionIsNotValid(string $startingPosition, string $endingPosition): void
     {
-        $this->assertFalse($this->bishop->canMove($this->board, $xAxis, $yAxis));
+        $bishop = new Bishop($this->board, new Field($startingPosition));
+
+        $this->assertFalse($bishop->canMove($this->board, new Field($endingPosition)));
     }
 
     public function validPositionsDataProvider(): array
     {
         return [
-            'valid position 1' => [2, 2],
-            'valid position 2' => [7, 7]
+            'Bishop moves from C1 to B2' => ['C1', 'B2'],
+            'Bishop moves from F1 to A6' => ['F1', 'A6'],
+            'Bishop moves from C8 to A6' => ['C8', 'A6'],
+            'Bishop moves from F8 to A3' => ['F8', 'A3'],
+            'Bishop moves from C5 to F2' => ['C5', 'F2']
         ];
     }
 
     public function invalidStartingPositionsDataProvider(): array
     {
         return [
-            'invalid starting position 1' => [-1, 2],
-            'invalid starting position 2' => [-4, -4],
-            'invalid starting position 3' => [0, 8]
+            'Set Bishop on A9' => ['A9'],
+            'Set Bishop on I1' => ['I1'],
+            'Set Bishop on A0' => ['A0'],
+            'Set Bishop on H-1' => ['H-1']
         ];
     }
 
     public function invalidEndingPositionsDataProvider(): array
     {
         return [
-            'invalid ending position 1' => [1, 2],
-            'invalid ending position 2' => [4, 3],
-            'invalid ending position 3' => [0, 7]
+            'Bishop moves from A1 to B1' => ['C1', 'C3'],
+            'Bishop moves from A1 to A2' => ['F1', 'H1'],
+            'Bishop moves from A1 to H1' => ['C8', 'B5'],
+            'Bishop moves from A1 to A5' => ['F8', 'D7'],
+            'Bishop moves from E4 to C3' => ['E4', 'C3']
         ];
     }
 }

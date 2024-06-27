@@ -6,20 +6,20 @@ use Exception;
 
 class Knight extends Piece
 {
-    public function __construct(Board $board, int $xAxis, int $yAxis)
+    public function __construct(Board $board, Field $position)
     {
-        parent::__construct($board, $xAxis, $yAxis);
+        parent::__construct($board, $position);
     }
 
     /**
      * @throws Exception
      */
-    public function canMove(Board $board, int $newX, int $newY): bool
+    public function canMove(Board $board, Field $newPosition): bool
     {
-        $this->isValidEndingPosition($board, $newX, $newY);
+        $this->isValidEndingPosition($board, $newPosition);
 
-        $dx = abs($newX - $this->xAxis);
-        $dy = abs($newY - $this->yAxis);
+        $dx = abs($newPosition->getXPosition() - $this->position->getXPosition());
+        $dy = abs($newPosition->getYPosition() - $this->position->getYPosition());
 
         return ($dx == 2 && $dy == 1) || ($dx == 1 && $dy == 2);
     }

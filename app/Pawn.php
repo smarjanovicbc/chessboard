@@ -11,21 +11,21 @@ class Pawn extends Piece
     /**
      * @throws Exception
      */
-    public function __construct(Board $board, int $xAxis, int $yAxis)
+    public function __construct(Board $board, Field $position)
     {
-        parent::__construct($board, $xAxis, $yAxis);
+        parent::__construct($board, $position);
         $this->isFirstMove = true;
     }
 
     /**
      * @throws Exception
      */
-    public function canMove(Board $board, int $newX, int $newY, bool $isCapturing = false): bool
+    public function canMove(Board $board, Field $newPosition, bool $isCapturing = false): bool
     {
-        $this->isValidEndingPosition($board, $newX, $newY);
+        $this->isValidEndingPosition($board, $newPosition);
 
-        $dx = $newX - $this->xAxis;
-        $dy = $newY - $this->yAxis;
+        $dx = $newPosition->getXPosition() - $this->position->getXPosition();
+        $dy = $newPosition->getYPosition() - $this->position->getYPosition();
 
         if ($isCapturing) {
 

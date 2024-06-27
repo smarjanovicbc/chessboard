@@ -6,18 +6,19 @@ use Exception;
 
 class Rook extends Piece
 {
-    public function __construct(Board $board, int $xAxis, int $yAxis)
+    public function __construct(Board $board, Field $position)
     {
-        parent::__construct($board, $xAxis, $yAxis);
+        parent::__construct($board, $position);
     }
 
     /**
      * @throws Exception
      */
-    public function canMove(Board $board, int $newX, int $newY): bool
+    public function canMove(Board $board, Field $newPosition): bool
     {
-        $this->isValidEndingPosition($board, $newX, $newY);
+        $this->isValidEndingPosition($board, $newPosition);
 
-        return $this->xAxis == $newX || $this->yAxis == $newY;
+        return $this->position->getXPosition() == $newPosition->getXPosition() ||
+               $this->position->getYPosition()  == $newPosition->getYPosition();
     }
 }

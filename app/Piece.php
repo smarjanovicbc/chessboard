@@ -6,28 +6,26 @@ use Exception;
 
 abstract class Piece
 {
-    protected $xAxis;
-    protected $yAxis;
+    protected $position;
 
     /**
      * @throws Exception
      */
-    public function __construct(Board $board, int $xAxis, int $yAxis)
+    public function __construct(Board $board, Field $position)
     {
-        if (!$board->isValidPosition($xAxis, $yAxis)) {
+        if (!$board->isValidPosition($position->getXPosition(), $position->getYPosition())) {
             throw new Exception('Starting coordinates are invalid. Please ensure the piece starts inside the board.');
         }
 
-        $this->xAxis = $xAxis;
-        $this->yAxis = $yAxis;
+        $this->position = $position;
     }
 
     /**
      * @throws Exception
      */
-    protected function isValidEndingPosition(Board $board, int $newX, int $newY): void
+    protected function isValidEndingPosition(Board $board, Field $newPosition): void
     {
-        if (!$board->isValidPosition($newX, $newY)) {
+        if (!$board->isValidPosition($newPosition->getXPosition(), $newPosition->getYPosition())) {
             throw new Exception('New coordinates are invalid. Please choose position inside the board.');
         }
     }

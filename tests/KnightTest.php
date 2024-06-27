@@ -1,13 +1,13 @@
 <?php
 
 use App\Board;
+use App\Field;
 use App\Knight;
 use PHPUnit\Framework\TestCase;
 
 class KnightTest extends TestCase {
 
     private $board;
-    private $knight;
 
     /**
      * @throws Exception
@@ -15,61 +15,75 @@ class KnightTest extends TestCase {
     public function setUp()
     {
         $this->board = new Board();
-        $this->knight = new Knight($this->board, 0, 0);
     }
 
     /**
      * @dataProvider validPositionsDataProvider
      * @throws Exception
      */
-    public function testKnightIsAllowedToMove(int $xAxis, int $yAxis): void
+    public function testKnightIsAllowedToMove(string $startingPosition, string $endingPosition): void
     {
-        $this->assertTrue($this->knight->canMove($this->board, $xAxis, $yAxis));
+        // given
+        $knight = new Knight($this->board, new Field($startingPosition));
+
+        // then
+        $this->assertTrue($knight->canMove($this->board, new Field($endingPosition)));
     }
 
     /**
      * @dataProvider invalidStartingPositionsDataProvider
      * @throws Exception
      */
-    public function testKnightIsNotAllowedToMove(int $xAxis, int $yAxis): void
+    public function testWhenTryingToCreateKnightInstanceWithInvalidPosition(string $position): void
     {
         // then
         $this->expectException(Exception::class);
 
         // when
-        $this->knight->canMove($this->board, $xAxis, $yAxis);
+         new Knight($this->board, new Field($position));
     }
 
     /**
      * @dataProvider invalidEndingPositionsDataProvider
      * @throws Exception
      */
-    public function testKnightsStartingPositionIsNotValid(int $xAxis, int $yAxis): void
+    public function testKnightsStartingPositionIsNotValid(string $startingPosition, string $endingPosition): void
     {
-        $this->assertFalse($this->knight->canMove($this->board, $xAxis, $yAxis));
+        // given
+        $knight = new Knight($this->board, new Field($startingPosition));
+
+        // then
+        $this->assertFalse($knight->canMove($this->board, new Field($endingPosition)));
     }
 
     public function validPositionsDataProvider(): array
     {
         return [
-            'valid position 1' => [2, 1],
-            'valid position 2' => [1, 2]
+            'Knight moves from B1 to C3' => ['B1', 'C3'],
+            'Knight moves from G1 to E2' => ['G1', 'E2'],
+            'Knight moves from D3 to C5' => ['D3', 'C5'],
+            'Knight moves from B8 to A6' => ['B8', 'A6'],
+            'Knight moves from G8 to E7' => ['G8', 'E7']
+
         ];
     }
 
     public function invalidStartingPositionsDataProvider(): array
     {
         return [
-            'invalid starting position 1' => [-1, -1],
-            'invalid starting position 3' => [8, 8]
+            'Set Knight on I2' => ['I2'],
+            'Set Knight on C9' => ['C9'],
+            'Set Knight on A0' => ['A0'],
+            'Set Knight on D-4' => ['D-4']
         ];
     }
 
     public function invalidEndingPositionsDataProvider(): array
     {
         return [
-            'invalid ending position 1' => [0, 0],
-            'invalid ending position 2' => [2, 2]
+            'Knight moves from A1 to A1' => ['A1', 'A1'],
+            'Knight moves from B1 to E4' => ['B1', 'E4'],
+            'Knight moves from G1 to G3' => ['G1', 'G3']
         ];
     }
 }
